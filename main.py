@@ -84,7 +84,7 @@ class EnergyStorageEnv(gym.Env):
         labels = ['Energy Storage', 'Energy Price', 'Total Reward']
         values = [self.energy_storage, self.energy_price, self.total_reward]
         plt.bar(labels, values, color=['blue', 'green', 'red'])
-        plt.ylim(min(values), max(values))  # Adjust y-limits based on the values
+        plt.ylim(min(values), max(values))  
         plt.ylabel("Values")
         plt.title("Energy Management Environment State")
         plt.show()
