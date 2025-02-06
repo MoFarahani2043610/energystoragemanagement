@@ -33,3 +33,27 @@ Imports spaces, which defines the state space (possible conditions of the enviro
 Imports NumPy, a library used for numerical operations and random number generation.
 Imports Gym, an OpenAI toolkit used to create and train reinforcement learning environments.
 Imports spaces, which defines the state space (possible conditions of the environment) and the action space (possible actions the agent can take).
+
+# Defining the Custom Environment Class
+
+Why Do We Define a Class for an Environment? In Gym, every custom environment must be defined as a class that inherits from gym.Env. This ensures that the environment follows a standard structure that reinforcement learning (RL) algorithms can interact with.
+
+By defining a class, we:
+
+Encapsulate the environment’s behavior : The class stores all relevant data, such as energy levels and price fluctuations.
+
+Ensure modularity and reusability : The environment can be easily modified and reused in different RL applications.
+
+Allow interaction with RL agents : The agent interacts with the environment by taking actions and receiving feedback.
+
+What Happens Here?
+
+✅ Creates a new environment called EnergyStorageEnv
+
+✅ Inherits from gym.Env to ensure compatibility with RL algorithms
+
+✅ Simulates an energy storage system where the agent must decide:
+
+Buy energy (increase storage, pay price)
+Sell energy (decrease storage, earn price)
+Hold energy (no change) This environment is useful for training an agent to optimize energy storage decisions based on price fluctuations.
