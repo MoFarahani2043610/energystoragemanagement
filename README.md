@@ -90,7 +90,7 @@ The agent has three possible actions:
 
 2 → Sell energy
 
-Initializing the State
+# Initializing the State
 
 The initial state is randomly generated:
 
