@@ -57,3 +57,41 @@ What Happens Here?
 Buy energy (increase storage, pay price)
 Sell energy (decrease storage, earn price)
 Hold energy (no change) This environment is useful for training an agent to optimize energy storage decisions based on price fluctuations.
+Initializing the Environment
+1- Defines the constructor method (init) to initialize the environment. It takes three parameters:
+
+max_storage_capacity : The maximum amount of energy (in kWh) that can be stored.
+
+max_price : The maximum energy price (in $/kWh).
+
+min_price : The minimum energy price (in $/kWh).
+
+2- Calls the constructor of the parent class gym.Env to properly initialize the environment.
+
+3-Stores the maximum storage capacity and energy price range as environment attributes.
+
+Defining State and Action Spaces
+
+Defines state space:
+
+The energy level in storage can range from 0 to 100 kWh.
+
+continuous state space (spaces.Box).
+
+Defines the price space, meaning energy prices can range from 0 to 100.
+
+Defines the action space:
+
+The agent has three possible actions:
+
+0 → Hold (do nothing)
+
+1 → Buy energy
+
+2 → Sell energy
+
+Initializing the State
+
+The initial state is randomly generated:
+
+The energy level is randomly set between 0 and max_storage_capacity. The energy price is randomly set between min_price and max_price. Initializes self.total_reward to 0, which will track the agent’s cumulative earnings.
