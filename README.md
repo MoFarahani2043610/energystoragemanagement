@@ -95,3 +95,5 @@ Initializing the State
 The initial state is randomly generated:
 
 The energy level is randomly set between 0 and max_storage_capacity. The energy price is randomly set between min_price and max_price. Initializes self.total_reward to 0, which will track the agent’s cumulative earnings.
+Resetting the Environment
+Defines the reset() function, which resets the environment to an initial state. Re-randomizes the initial state when the environment resets. Resets total reward to 0. Returns the new initial state.
