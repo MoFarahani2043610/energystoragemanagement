@@ -91,9 +91,55 @@ The agent has three possible actions:
 2 → Sell energy
 
 # Initializing the State
-
 The initial state is randomly generated:
 
 The energy level is randomly set between 0 and max_storage_capacity. The energy price is randomly set between min_price and max_price. Initializes self.total_reward to 0, which will track the agent’s cumulative earnings.
-Resetting the Environment
-Defines the reset() function, which resets the environment to an initial state. Re-randomizes the initial state when the environment resets. Resets total reward to 0. Returns the new initial state.
+
+# Resetting the Environment
+
+Defines the reset() function, which resets the environment to an initial state.
+Re-randomizes the initial state when the environment resets.
+Resets total reward to 0.
+Returns the new initial state.
+
+# Taking an Action
+
+Defines the step() function, which takes an action and updates the environment accordingly.
+Extracts current energy level and current price from the state.
+Processing Actions
+
+If the action is 1 (buy energy)
+
+2- If there is storage capacity left, increase energy by 1 kWh.
+
+3- The reward is negative (-price) because the agent pays for energy.
+
+3- If storage is full, the agent still loses money but cannot store more energy.
+
+If the action is 2 (sell energy):
+
+1- If energy is available, sell 1 kWh and earn money (reward = price).
+
+2- If there is no energy left, no profit is made.
+
+If the action is 0 (hold), nothing changes, and no reward is gained or lost.
+
+Double-click (or enter) to edit
+
+# Updating the State
+
+Updates the energy level based on the action.
+Generates a new random price for the next time step.
+Updates the cumulative total reward.
+Defines episode termination condition: If total reward drops below -100, the episode ends (done = True).
+Returns:
+1.   The new state
+2.   The reward
+3.   Whether the episode is finished
+4.   An empty dictionary {} for additional info
+
+# Rendering the Environment
+
+Defines render(), which displays the current environment state.
+
+Prints the current energy level, price, and total reward.
