@@ -108,6 +108,7 @@ print("energyStep - Energy Storage:", energyStep[0], "kWh, Energy Price:", energ
 print("reward", reward)
 print("done", done)
 print ("Action",env._get_action_name(randomAction))
+
     
             
 

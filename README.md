@@ -56,4 +56,4 @@ The agent interacts with the environment, selects different actions, and the env
 
 - Updates the energy level and generates a new random price.
 
-- Ends the episode if the total reward drops below a defined threshold.
+- Ends the episode if the total reward drops below a defined threshold
