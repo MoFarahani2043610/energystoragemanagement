@@ -6,140 +6,54 @@ This code creates a custom reinforcement learning environment for an energy stor
 
 The agent interacts with the environment, selects different actions, and the environment responds accordingly. Over time, the agent learns to develop an effective strategy to maximize profit or minimize losses.
 
-What is Needed to make an envirnment in Gymnasim envirnment?
+# Features
 
-1- Import Libraries (Gym, NumPy)
+** Custom Gymnasium Environment: Simulates an energy storage system.
 
-2- Create a Class inheriting from gym.Env
+** Action-Based Decision Making: Allows the agent to buy, sell, or hold energy.
 
-3- Define init() (State space, Action space, Parameters)
+** Dynamic Energy Pricing: Incorporates fluctuating energy prices.
 
-4- Define reset() (Reset state)
+** State Representation: Tracks energy storage levels and price variations.
 
-5- Define step(action) (Update state, reward, and termination)
+** Optimized Learning: Enables reinforcement learning models to develop efficient energy trading strategies
 
-6- Define render() (Show current state)
+# Components of the Environment
 
-Sets up a Gym environment in Google Colab
+1. State and Action Spaces
 
-Importing Libraries
+** State Space: Represents the energy level in storage (continuous values) and the current energy price.
 
-Imports NumPy, a library used for numerical operations and random number generation.
-Imports Gym, an OpenAI toolkit used to create and train reinforcement learning environments.
-Imports spaces, which defines the state space (possible conditions of the environment) and the action space (possible actions the agent can take).
-
-# Importing Libraries
-
-Imports NumPy, a library used for numerical operations and random number generation.
-Imports Gym, an OpenAI toolkit used to create and train reinforcement learning environments.
-Imports spaces, which defines the state space (possible conditions of the environment) and the action space (possible actions the agent can take).
-
-# Defining the Custom Environment Class
-
-Why Do We Define a Class for an Environment? In Gym, every custom environment must be defined as a class that inherits from gym.Env. This ensures that the environment follows a standard structure that reinforcement learning (RL) algorithms can interact with.
-
-By defining a class, we:
-
-Encapsulate the environment’s behavior : The class stores all relevant data, such as energy levels and price fluctuations.
-
-Ensure modularity and reusability : The environment can be easily modified and reused in different RL applications.
-
-Allow interaction with RL agents : The agent interacts with the environment by taking actions and receiving feedback.
-
-What Happens Here?
-
-✅ Creates a new environment called EnergyStorageEnv
-
-✅ Inherits from gym.Env to ensure compatibility with RL algorithms
-
-✅ Simulates an energy storage system where the agent must decide:
-
-Buy energy (increase storage, pay price)
-Sell energy (decrease storage, earn price)
-Hold energy (no change) This environment is useful for training an agent to optimize energy storage decisions based on price fluctuations.
-Initializing the Environment
-1- Defines the constructor method (init) to initialize the environment. It takes three parameters:
-
-max_storage_capacity : The maximum amount of energy (in kWh) that can be stored.
-
-max_price : The maximum energy price (in $/kWh).
-
-min_price : The minimum energy price (in $/kWh).
-
-2- Calls the constructor of the parent class gym.Env to properly initialize the environment.
-
-3-Stores the maximum storage capacity and energy price range as environment attributes.
-
-Defining State and Action Spaces
-
-Defines state space:
-
-The energy level in storage can range from 0 to 100 kWh.
-
-continuous state space (spaces.Box).
-
-Defines the price space, meaning energy prices can range from 0 to 100.
-
-Defines the action space:
-
-The agent has three possible actions:
+** Action Space:
 
 0 → Hold (do nothing)
 
-1 → Buy energy
+1 → Buy energy (increase storage, pay price)
 
-2 → Sell energy
+2 → Sell energy (decrease storage, earn price)
 
-# Initializing the State
-The initial state is randomly generated:
+2. Environment Initialization
 
-The energy level is randomly set between 0 and max_storage_capacity. The energy price is randomly set between min_price and max_price. Initializes self.total_reward to 0, which will track the agent’s cumulative earnings.
+- The environment starts with a random energy level and energy price.
 
-# Resetting the Environment
+- The maximum storage capacity and energy price range are defined as environment attributes.
 
-Defines the reset() function, which resets the environment to an initial state.
-Re-randomizes the initial state when the environment resets.
-Resets total reward to 0.
-Returns the new initial state.
+3. Reset Function
 
-# Taking an Action
+- Resets the environment to an initial state.
 
-Defines the step() function, which takes an action and updates the environment accordingly.
-Extracts current energy level and current price from the state.
-Processing Actions
+- Randomizes the starting energy level and price.
 
-If the action is 1 (buy energy)
+- Resets the total accumulated reward.
 
-2- If there is storage capacity left, increase energy by 1 kWh.
+4. Step Function
 
-3- The reward is negative (-price) because the agent pays for energy.
+- Takes an action and updates the environment state.
 
-3- If storage is full, the agent still loses money but cannot store more energy.
+- Implements rules for buying, selling, or holding energy.
 
-If the action is 2 (sell energy):
+- Calculates the reward based on the transaction.
 
-1- If energy is available, sell 1 kWh and earn money (reward = price).
+- Updates the energy level and generates a new random price.
 
-2- If there is no energy left, no profit is made.
-
-If the action is 0 (hold), nothing changes, and no reward is gained or lost.
-
-Double-click (or enter) to edit
-
-# Updating the State
-
-Updates the energy level based on the action.
-Generates a new random price for the next time step.
-Updates the cumulative total reward.
-Defines episode termination condition: If total reward drops below -100, the episode ends (done = True).
-Returns:
-1.   The new state
-2.   The reward
-3.   Whether the episode is finished
-4.   An empty dictionary {} for additional info
-
-# Rendering the Environment
-
-Defines render(), which displays the current environment state.
-
-Prints the current energy level, price, and total reward.
+- Ends the episode if the total reward drops below a defined threshold.
