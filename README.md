@@ -8,23 +8,23 @@ The agent interacts with the environment, selects different actions, and the env
 
 # Features
 
-** Custom Gymnasium Environment: Simulates an energy storage system.
+* Custom Gymnasium Environment: Simulates an energy storage system.
 
-** Action-Based Decision Making: Allows the agent to buy, sell, or hold energy.
+* Action-Based Decision Making: Allows the agent to buy, sell, or hold energy.
 
-** Dynamic Energy Pricing: Incorporates fluctuating energy prices.
+* Dynamic Energy Pricing: Incorporates fluctuating energy prices.
 
-** State Representation: Tracks energy storage levels and price variations.
+* State Representation: Tracks energy storage levels and price variations.
 
-** Optimized Learning: Enables reinforcement learning models to develop efficient energy trading strategies
+* Optimized Learning: Enables reinforcement learning models to develop efficient energy trading strategies
 
 # Components of the Environment
 
 1. State and Action Spaces
 
-** State Space: Represents the energy level in storage (continuous values) and the current energy price.
+* State Space: Represents the energy level in storage (continuous values) and the current energy price.
 
-** Action Space:
+* Action Space:
 
 0 → Hold (do nothing)
 
