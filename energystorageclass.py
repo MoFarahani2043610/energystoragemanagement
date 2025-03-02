@@ -1,8 +1,8 @@
-
 # Import necessary libraries
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
+
 
 class EnergyStorageEnv(gym.Env):
     def __init__(self, max_storage_capacity=100, max_price=100, min_price=0):
@@ -67,7 +67,7 @@ class EnergyStorageEnv(gym.Env):
         # Define termination condition
         done = self.energy_storage >= self.max_storage_capacity or self.energy_storage <= 0
 
-        return np.array([self.energy_storage, self.energy_price], dtype=np.float32), reward, done
+        return np.array([self.energy_storage, self.energy_price], dtype=np.float32), reward, done, {}
           
     def display_state(self, action, done, reward):      
         # Displays the current Envirnment State,Action and Reward.
@@ -91,26 +91,3 @@ class EnergyStorageEnv(gym.Env):
              return "Sell"
          else :
              return "Unknown"
-         
-#example usage
-env = EnergyStorageEnv()
-state,_ = env.reset()
-        
-randomAction = env.action_space.sample()
-
-step = env.step(randomAction)
-
-energyStep = step[0]
-reward = step[1]
-done = step[2]
-
-print("energyStep - Energy Storage:", energyStep[0], "kWh, Energy Price:", energyStep[1])
-print("reward", reward)
-print("done", done)
-print ("Action",env._get_action_name(randomAction))
-
-    
-            
-
-            
-    
