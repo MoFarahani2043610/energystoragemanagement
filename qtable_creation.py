@@ -2,8 +2,9 @@
 from constants import NUM_BINS_ENERGY, NUM_BINS_PRICE
 from energystorageclass import EnergyStorageEnv
 import numpy as np
+from upload import time_series_data
 
-env = EnergyStorageEnv()
+env = EnergyStorageEnv(max_storage_capacity=100, time_series_data=time_series_data)
 
 # Define action space size
 action_space_size = env.action_space.n  # This will give 3 (for 0, 1, 2)

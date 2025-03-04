@@ -2,10 +2,10 @@
 from constants import ALPHA, EPSILON_DECAY, EPSILON_MIN, GAMMA, NUM_BINS_ENERGY, NUM_BINS_PRICE
 from energystorageclass import EnergyStorageEnv
 import numpy as np
-
+from upload import time_series_data
 from qtable_creation import discretize_state, get_action_space_size, get_state_space_size
 
-env = EnergyStorageEnv()
+env = EnergyStorageEnv(max_storage_capacity=100, time_series_data=time_series_data)
 
 # Q-learning update rule
 def update_q_table(q_table, state, action, reward, next_state, alpha, gamma):
@@ -22,8 +22,9 @@ q_table = np.zeros((get_state_space_size(), get_action_space_size()))  # Initial
 
 for episode in range(num_episodes):
     state, _ = env.reset()
-    state_index = discretize_state(state, NUM_BINS_ENERGY, NUM_BINS_PRICE, env.max_storage_capacity, env.max_price)
+    state_index = discretize_state(state, NUM_BINS_ENERGY, NUM_BINS_PRICE, env.max_storage_capacity, np.max(time_series_data[:, 0]))
     done = False
+    total_reward = 0
 
     while not done:
         # Epsilon-greedy action selection
@@ -34,19 +35,20 @@ for episode in range(num_episodes):
 
         # Take the action and observe the next state and reward
         next_state, reward, done, _ = env.step(action)
-        next_state_index = discretize_state(next_state, NUM_BINS_ENERGY, NUM_BINS_PRICE, env.max_storage_capacity, env.max_price)
+        next_state_index = discretize_state(next_state, NUM_BINS_ENERGY, NUM_BINS_PRICE, env.max_storage_capacity, np.max(time_series_data[:, 0]))
 
         # Update Q-table
         q_table = update_q_table(q_table, state_index, action, reward, next_state_index, ALPHA, GAMMA)
 
         # Move to the next state
         state_index = next_state_index
+        total_reward += reward
 
     # Decay epsilon
     epsilon = max(EPSILON_MIN, epsilon * EPSILON_DECAY)
 
     # Print progress
     if (episode + 1) % 100 == 0:
-        print(f"Episode {episode + 1}, Epsilon: {epsilon:.3f}")
+        print(f"Episode {episode + 1}, Epsilon: {epsilon:.3f}, Total Reward: {total_reward:.2f}")
 
 print("Training complete!")
