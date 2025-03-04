@@ -2,6 +2,7 @@
 from constants import ALPHA, EPSILON_DECAY, EPSILON_MIN, GAMMA, NUM_BINS_ENERGY, NUM_BINS_PRICE
 from energystorageclass import EnergyStorageEnv
 import numpy as np
+import matplotlib.pyplot as plt
 from upload import time_series_data
 from qtable_creation import discretize_state, get_action_space_size, get_state_space_size
 
@@ -15,16 +16,24 @@ def update_q_table(q_table, state, action, reward, next_state, alpha, gamma):
     q_table[state, action] = new_q_value
     return q_table
 
+# Initialize list to store rewards per episode
+episode_rewards = [] 
+action_log = []  # To log actions taken in each episode
+
 # Train the agent
 num_episodes = 1000
 epsilon = 1.0  # Initialize epsilon
 q_table = np.zeros((get_state_space_size(), get_action_space_size()))  # Initialize Q-table
+
+# Action mapping
+action_names = {0: "Hold", 1: "Buy", 2: "Sell"}
 
 for episode in range(num_episodes):
     state, _ = env.reset()
     state_index = discretize_state(state, NUM_BINS_ENERGY, NUM_BINS_PRICE, env.max_storage_capacity, np.max(time_series_data[:, 0]))
     done = False
     total_reward = 0
+    episode_actions = []  # To log actions for this episode
 
     while not done:
         # Epsilon-greedy action selection
@@ -32,6 +41,9 @@ for episode in range(num_episodes):
             action = np.random.randint(0, get_action_space_size())  # Explore: random action
         else:
             action = np.argmax(q_table[state_index, :])  # Exploit: best known action
+            
+        # Log the action
+        episode_actions.append(action)
 
         # Take the action and observe the next state and reward
         next_state, reward, done, _ = env.step(action)
@@ -43,6 +55,10 @@ for episode in range(num_episodes):
         # Move to the next state
         state_index = next_state_index
         total_reward += reward
+          
+    # Store total reward for this episode
+    episode_rewards.append(total_reward)  
+    action_log.append(episode_actions)  
 
     # Decay epsilon
     epsilon = max(EPSILON_MIN, epsilon * EPSILON_DECAY)
@@ -52,3 +68,32 @@ for episode in range(num_episodes):
         print(f"Episode {episode + 1}, Epsilon: {epsilon:.3f}, Total Reward: {total_reward:.2f}")
 
 print("Training complete!")
+
+# Plot total reward per episode
+plt.figure(figsize=(12, 6))
+plt.subplot(2, 1, 1)
+plt.plot(episode_rewards)
+plt.xlabel("Episode")
+plt.ylabel("Total Reward")
+plt.title("Total Reward per Episode")
+
+# Plot actions taken in the last episode
+plt.subplot(2, 1, 2)
+plt.plot(action_log[-1], label="Actions")
+plt.yticks([0, 1, 2], [action_names[0], action_names[1], action_names[2]])  # Map action numbers to names
+plt.xlabel("Step")
+plt.ylabel("Action")
+plt.title("Actions Taken in the Last Episode")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# Analyze action distribution
+action_counts = np.zeros(get_action_space_size())
+for episode_actions in action_log:
+    for action in episode_actions:
+        action_counts[action] += 1
+
+print("Action Distribution:")
+for action, count in enumerate(action_counts):
+    print(f"Action {action} ({action_names[action]}): {count} times")
