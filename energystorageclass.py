@@ -1,8 +1,7 @@
-# Import necessary libraries
 import gymnasium as gym
 import numpy as np
 from gymnasium import spaces
-from upload import time_series_data  # Ensure time_series_data is loaded correctly
+from upload import time_series_data  
 
 
 class EnergyStorageEnv(gym.Env):
@@ -86,7 +85,7 @@ class EnergyStorageEnv(gym.Env):
         print(f"Reward: {reward:.2f}")
         print(f"Total Reward: {self.total_reward:.2f}")
         print(f"Done: {done}")
-        print("-" * 40)  # Separator for clarity
+        print("-" * 40)  
 
     def _get_action_name(self, action):
         """

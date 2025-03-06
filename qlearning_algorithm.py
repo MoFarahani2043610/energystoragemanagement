@@ -1,4 +1,3 @@
-# Create an instance of the environment
 from constants import ALPHA, EPSILON_DECAY, EPSILON_MIN, GAMMA, NUM_BINS_ENERGY, NUM_BINS_PRICE
 from energystorageclass import EnergyStorageEnv
 import numpy as np
@@ -22,7 +21,7 @@ action_log = []  # To log actions taken in each episode
 
 # Train the agent
 num_episodes = 1000
-epsilon = 1.0  # Initialize epsilon
+epsilon = 1.0  
 q_table = np.zeros((get_state_space_size(), get_action_space_size()))  # Initialize Q-table
 
 # Action mapping
@@ -83,7 +82,7 @@ plt.plot(action_log[-1], label="Actions")
 plt.yticks([0, 1, 2], [action_names[0], action_names[1], action_names[2]])  # Map action numbers to names
 plt.xlabel("Step")
 plt.ylabel("Action")
-plt.title("Actions Taken in the Last Episode")
+plt.title("Actions Taken in each Episode")
 plt.legend()
 plt.tight_layout()
 plt.show()
