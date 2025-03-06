@@ -1,17 +1,17 @@
-# **Energy Storage Management - Reinforcement Learning Environment**
+# **Energy Storage Management - Q-Learning Reinforcement Learning Environment**
 
 ## **Overview**
-This project implements a custom **Reinforcement Learning (RL)** environment designed to manage an energy storage system using the **Gym** library. The environment simulates an agent making energy trading decisions—such as buying, selling, or holding energy—based on fluctuating market prices. The goal is to **maximize profit** by making optimal energy trading decisions over time.
+This project implements a custom **Reinforcement Learning (RL)** environment designed to manage an energy storage system using the **Gym** library. The environment simulates an agent making energy trading decisions such as buying, selling, or holding energy based on fluctuating market prices. The goal is to **maximize profit** by making optimal energy trading decisions over time.The agent is trained using **Q-learning**, a model-free reinforcement learning algorithm, to maximize profit by making optimal energy trading decisions over time.
 
 ---
 
 ## **Features**
 - **Custom Gym Environment:** Models energy storage and decision-making related to trading.
 - **Action-Based Decision Making:** The agent can choose to buy, sell, or hold energy.
+- **Q-Learning Algorithm:** Implements a Q-learning agent to optimize energy trading strategies.
 - **Dynamic Energy Pricing:** Utilizes a 199-day dataset containing daily minimum and maximum prices.
 - **State Representation:** Tracks energy storage levels and price fluctuations.
 - **Reinforcement Learning Ready:** Facilitates the development of optimized trading strategies.
-- **Colab Compatibility:** Designed to run seamlessly in Google Colab with minimal setup.
 
 ---
 
@@ -40,8 +40,6 @@ Each row includes:
 
 These prices simulate realistic energy market fluctuations.
 
-**Colab Note:** The dataset can be uploaded to Colab using **Google Drive** or directly loaded from a **URL**.
-
 ---
 
 ### **3. Environment Initialization**
@@ -57,8 +55,6 @@ The environment begins with:
 - Randomizes the **starting energy level** and **price**.
 - Resets the **total accumulated reward**.
 
-**Colab Note:** The `reset()` function is called at the start of each episode.
-
 ---
 
 ### **5. Step Function**
@@ -67,8 +63,6 @@ The environment begins with:
 - Calculates **rewards** based on **profit/loss** from the transaction.
 - Updates the **energy storage level** and selects a new random price from the dataset.
 - Ends the **episode** if the **total reward** drops below a defined threshold.
-
-**Colab Note:** The `step()` function is called for each action taken by the agent.
 
 ---
 
