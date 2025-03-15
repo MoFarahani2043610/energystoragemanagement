@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from upload import time_series_data
 from qtable_creation import discretize_state, get_action_space_size, get_state_space_size
+from tabulate import tabulate  # Import the tabulate library
+import sys 
 
 env = EnergyStorageEnv(max_storage_capacity=100, time_series_data=time_series_data)
 
@@ -20,9 +22,9 @@ episode_rewards = []
 action_log = []  # To log actions taken in each episode
 
 # Train the agent
-num_episodes = 1000
+num_episodes = 10000
 epsilon = 1.0  
-q_table = np.zeros((get_state_space_size(), get_action_space_size()))  # Initialize Q-table
+q_table = np.random.uniform(low=-0.1, high=0.1, size=(NUM_BINS_ENERGY * NUM_BINS_PRICE, env.action_space.n))  # Initialize Q-table with small random values
 
 # Action mapping
 action_names = {0: "Hold", 1: "Buy", 2: "Sell"}
@@ -39,8 +41,12 @@ for episode in range(num_episodes):
         if np.random.rand() < epsilon:
             action = np.random.randint(0, get_action_space_size())  # Explore: random action
         else:
-            action = np.argmax(q_table[state_index, :])  # Exploit: best known action
-            
+            # With a small probability, still explore even during exploitation
+            if np.random.rand() < 0.1:  # 10% chance to explore
+                action = np.random.randint(0, get_action_space_size())
+            else:
+                action = np.argmax(q_table[state_index, :])  # Exploit: best-known action
+                    
         # Log the action
         episode_actions.append(action)
 
@@ -65,6 +71,7 @@ for episode in range(num_episodes):
     # Print progress
     if (episode + 1) % 100 == 0:
         print(f"Episode {episode + 1}, Epsilon: {epsilon:.3f}, Total Reward: {total_reward:.2f}")
+        
 
 print("Training complete!")
 
@@ -77,22 +84,48 @@ plt.ylabel("Total Reward")
 plt.title("Total Reward per Episode")
 
 # Plot actions taken in the last episode
-plt.subplot(2, 1, 2)
-plt.plot(action_log[-1], label="Actions")
-plt.yticks([0, 1, 2], [action_names[0], action_names[1], action_names[2]])  # Map action numbers to names
-plt.xlabel("Step")
-plt.ylabel("Action")
-plt.title("Actions Taken in each Episode")
-plt.legend()
-plt.tight_layout()
-plt.show()
+#plt.subplot(2, 1, 2)
+#plt.plot(action_log[-1], label="Actions")
+#plt.yticks([0, 1, 2], [action_names[0], action_names[1], action_names[2]])  # Map action numbers to names
+#plt.xlabel("Step")
+#plt.ylabel("Action")
+#plt.title("Actions Taken in each Episode")
+#plt.legend()
+#plt.tight_layout()
+#plt.show()
 
 # Analyze action distribution
-action_counts = np.zeros(get_action_space_size())
+action_space_size = get_action_space_size()
+if action_space_size != 3:
+    print(f"Warning: Expected 3 actions, but got {action_space_size}")
+
+action_counts = np.zeros(action_space_size)
 for episode_actions in action_log:
     for action in episode_actions:
         action_counts[action] += 1
 
-print("Action Distribution:")
+print("\nAction Distribution:")
 for action, count in enumerate(action_counts):
     print(f"Action {action} ({action_names[action]}): {count} times")
+
+# Calculate percentages safely
+total_actions = np.sum(action_counts)
+if total_actions > 0:
+    action_percentages = (action_counts / total_actions) * 100
+else:
+    action_percentages = np.zeros_like(action_counts)  # Avoid division by zero
+
+# Prepare data for the table
+table_data = [[action_names[action], count, f"{action_percentages[action]:.2f}%"] for action, count in enumerate(action_counts)]
+
+# Display the table
+headers = ["Action", "Count", "Percentage"]
+print("\nGenerating table...")
+print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))  # Improved table format
+
+# Debugging prints
+print("\nDebug - Action Counts:", action_counts)
+print("Debug - Table Data:", table_data)
+
+# Force output display
+sys.stdout.flush()
