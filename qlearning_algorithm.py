@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from upload import time_series_data
 from qtable_creation import discretize_state, get_action_space_size, get_state_space_size
-from tabulate import tabulate  # Import the tabulate library
+from tabulate import tabulate  
 import sys 
 
 env = EnergyStorageEnv(max_storage_capacity=100, time_series_data=time_series_data)
@@ -42,7 +42,7 @@ for episode in range(num_episodes):
             action = np.random.randint(0, get_action_space_size())  # Explore: random action
         else:
             # With a small probability, still explore even during exploitation
-            if np.random.rand() < 0.1:  # 10% chance to explore
+            if np.random.rand() < 0.1:  
                 action = np.random.randint(0, get_action_space_size())
             else:
                 action = np.argmax(q_table[state_index, :])  # Exploit: best-known action

@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_excel("RAW_DATA.xlsx")
+df = pd.read_excel("minute_energy_prices.xlsx")
 
 print("Original column names:", df.columns.tolist())
 

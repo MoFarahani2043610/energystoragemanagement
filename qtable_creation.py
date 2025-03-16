@@ -1,4 +1,3 @@
-# Create an instance of the environment
 from constants import NUM_BINS_ENERGY, NUM_BINS_PRICE
 from energystorageclass import EnergyStorageEnv
 import numpy as np
